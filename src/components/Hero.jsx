@@ -85,11 +85,41 @@ const Hero = () => {
             transition={{ delay: 1.5, duration: 0.6 }}
             className="flex flex-col sm:flex-row gap-6 justify-center items-center"
           >
-            <button className="group relative px-10 py-4 bg-primary text-black font-bold rounded-full transition-all duration-500 hover:shadow-[0_0_30px_rgba(0,212,255,0.6)] hover:scale-105 active:scale-95 will-change-transform">
+            <button 
+              onClick={() => {
+                const element = document.getElementById('contact');
+                const offset = 80;
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = element.getBoundingClientRect().top;
+                const elementPosition = elementRect - bodyRect;
+                const offsetPosition = elementPosition - offset;
+
+                window.scrollTo({
+                  top: offsetPosition,
+                  behavior: 'smooth'
+                });
+              }}
+              className="group relative px-10 py-4 bg-primary text-black font-bold rounded-full transition-all duration-500 hover:shadow-[0_0_30px_rgba(0,212,255,0.6)] hover:scale-105 active:scale-95 will-change-transform"
+            >
               Get Started
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity rounded-full" />
             </button>
-            <button className="px-10 py-4 border border-white/20 text-white font-bold rounded-full hover:bg-white/5 hover:border-white/40 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] will-change-transform active:scale-95">
+            <button 
+              onClick={() => {
+                const element = document.getElementById('technology');
+                const offset = 80;
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = element.getBoundingClientRect().top;
+                const elementPosition = elementRect - bodyRect;
+                const offsetPosition = elementPosition - offset;
+
+                window.scrollTo({
+                  top: offsetPosition,
+                  behavior: 'smooth'
+                });
+              }}
+              className="px-10 py-4 border border-white/20 text-white font-bold rounded-full hover:bg-white/5 hover:border-white/40 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] will-change-transform active:scale-95"
+            >
               Learn More
             </button>
           </motion.div>

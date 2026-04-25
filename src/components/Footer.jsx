@@ -43,7 +43,26 @@ const Footer = () => {
             <ul className="space-y-4">
               {['Home', 'About', 'Solutions', 'Blog'].map((item) => (
                 <li key={item}>
-                  <a href={`#${item.toLowerCase()}`} className="text-text-secondary hover:text-primary transition-colors duration-300 text-sm md:text-base">{item}</a>
+                  <button 
+                    onClick={() => {
+                      if (item === 'Home') window.scrollTo({ top: 0, behavior: 'smooth' });
+                      else {
+                        const id = item.toLowerCase();
+                        const element = document.getElementById(id);
+                        if (element) {
+                          const offset = 80;
+                          const bodyRect = document.body.getBoundingClientRect().top;
+                          const elementRect = element.getBoundingClientRect().top;
+                          const elementPosition = elementRect - bodyRect;
+                          const offsetPosition = elementPosition - offset;
+                          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                        }
+                      }
+                    }}
+                    className="text-text-secondary hover:text-primary transition-colors duration-300 text-sm md:text-base text-left"
+                  >
+                    {item}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -52,9 +71,29 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-bold mb-8 uppercase tracking-[0.2em] text-xs">Solutions</h4>
             <ul className="space-y-4">
-              {['Trading APIs', 'Market Data', 'Custom Solutions', 'RMS'].map((item) => (
-                <li key={item}>
-                  <a href="#technology" className="text-text-secondary hover:text-primary transition-colors duration-300 text-sm md:text-base">{item}</a>
+              {[
+                { name: 'Trading APIs', id: 'solutions' },
+                { name: 'Market Data', id: 'solutions' },
+                { name: 'Custom Solutions', id: 'solutions' },
+                { name: 'RMS', id: 'solutions' }
+              ].map((item) => (
+                <li key={item.name}>
+                  <button 
+                    onClick={() => {
+                      const element = document.getElementById(item.id);
+                      if (element) {
+                        const offset = 80;
+                        const bodyRect = document.body.getBoundingClientRect().top;
+                        const elementRect = element.getBoundingClientRect().top;
+                        const elementPosition = elementRect - bodyRect;
+                        const offsetPosition = elementPosition - offset;
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                      }
+                    }}
+                    className="text-text-secondary hover:text-primary transition-colors duration-300 text-sm md:text-base text-left"
+                  >
+                    {item.name}
+                  </button>
                 </li>
               ))}
             </ul>

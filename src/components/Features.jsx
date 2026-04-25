@@ -70,7 +70,7 @@ const FeatureCard = ({ icon: Icon, title, description, reverse = false, darkBg =
 
 const Features = () => {
   return (
-    <section id="solutions" className="relative z-10">
+    <section id="technology" className="relative z-10">
       {/* Section Header */}
       <div className="py-24 text-center">
         <motion.div
