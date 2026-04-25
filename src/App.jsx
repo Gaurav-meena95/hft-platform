@@ -1,6 +1,8 @@
 import React from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
+import Stats from './components/Stats'
+import Features from './components/Features'
 
 function App() {
   return (
@@ -8,10 +10,8 @@ function App() {
       <Navbar />
       <Hero />
       
-      {/* 
-        Remaining phases will be added here. 
-        Phase 2 is now complete with all specific requirements.
-      */}
+      <Stats />
+      <Features />
       
       <footer className="py-20 border-t border-white/5 bg-black relative z-10">
         <div className="container mx-auto px-6 text-center text-text-secondary">
