@@ -18,7 +18,6 @@ const Navbar = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
 
-      // Detect active section
       const sections = ['solutions', 'technology', 'about', 'contact'];
       let current = '';
       
@@ -38,7 +37,34 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Prevent body scroll and stop Lenis when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      if (window.lenis) window.lenis.stop();
+    } else {
+      document.body.style.overflow = 'unset';
+      if (window.lenis) window.lenis.start();
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+      if (window.lenis) window.lenis.start();
+    };
+  }, [isMobileMenuOpen]);
+
   const scrollToSection = (id) => {
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+      setTimeout(() => {
+        performScroll(id);
+      }, 300);
+    } else {
+      performScroll(id);
+    }
+  };
+
+  const performScroll = (id) => {
     const element = document.getElementById(id);
     if (element) {
       const offset = 80;
@@ -51,8 +77,11 @@ const Navbar = () => {
         top: offsetPosition,
         behavior: 'smooth'
       });
+      
+      if (window.lenis) {
+        window.lenis.scrollTo(offsetPosition, { duration: 1.2 });
+      }
     }
-    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -65,7 +94,7 @@ const Navbar = () => {
         {/* Logo */}
         <div 
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="flex items-center gap-2 group cursor-pointer"
+          className="flex items-center gap-2 group cursor-pointer relative z-[10000]"
         >
           <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(0,212,255,0.5)] group-hover:rotate-12 transition-transform duration-300">
             <div className="w-5 h-5 bg-black rounded-sm transform rotate-45" />
@@ -104,46 +133,48 @@ const Navbar = () => {
 
         {/* Mobile Menu Toggle */}
         <button 
-          className="md:hidden text-white p-2"
+          className="md:hidden text-white p-2 relative z-[10000]"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          {isMobileMenuOpen ? <X size={32} className="text-primary" /> : <Menu size={32} />}
         </button>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Overlay - FIXED POSITIONING */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-0 top-0 bg-black/98 backdrop-blur-2xl z-40 md:hidden flex flex-col items-center justify-center gap-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#0a0a0a] z-[9999] md:hidden flex flex-col items-center justify-center"
           >
-            <button 
-              className="absolute top-8 right-8 text-white"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <X size={32} />
-            </button>
-            {navLinks.map((item) => (
-              <button 
-                key={item.id} 
-                onClick={() => scrollToSection(item.id)}
-                className={`text-3xl font-display font-bold transition-colors ${
-                  activeSection === item.id ? 'text-primary' : 'text-white hover:text-primary'
-                }`}
+            <div className="flex flex-col items-center gap-10">
+              {navLinks.map((item, i) => (
+                <motion.button 
+                  key={item.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * i + 0.1 }}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`text-4xl font-display font-bold transition-all ${
+                    activeSection === item.id ? 'text-primary scale-110' : 'text-white hover:text-primary'
+                  }`}
+                >
+                  {item.name}
+                </motion.button>
+              ))}
+              <motion.button 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                onClick={() => scrollToSection('contact')}
+                className="mt-6 px-12 py-5 bg-primary text-black font-extrabold rounded-full text-xl shadow-[0_0_30px_rgba(0,212,255,0.4)]"
               >
-                {item.name}
-              </button>
-            ))}
-            <button 
-              onClick={() => scrollToSection('contact')}
-              className="mt-4 px-10 py-4 bg-primary text-black font-bold rounded-full"
-            >
-              Get Started
-            </button>
+                Get Started
+              </motion.button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

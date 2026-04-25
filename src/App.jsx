@@ -9,19 +9,51 @@ import Contact from './components/Contact'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 import Loader from './components/Loader'
+import Lenis from '@studio-freight/lenis'
 import { motion, AnimatePresence } from 'framer-motion'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate initial loading
+    // FIX 2: Faster loader duration (800ms + transition)
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1500);
+    }, 800);
     
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      // Initialize Lenis ONLY after loader completes
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        smoothTouch: false,
+        touchMultiplier: 2,
+        infinite: false,
+      })
+
+      window.lenis = lenis;
+
+      function raf(time) {
+        lenis.raf(time)
+        requestAnimationFrame(raf)
+      }
+
+      requestAnimationFrame(raf)
+
+      return () => {
+        lenis.destroy()
+        delete window.lenis;
+      }
+    }
+  }, [isLoading]);
 
   return (
     <>
@@ -32,7 +64,7 @@ function App() {
           <motion.main 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 0.5 }}
             className="relative min-h-screen bg-black overflow-hidden selection:bg-primary selection:text-black"
           >
             <Navbar />
