@@ -1,101 +1,116 @@
-import React, { useEffect, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { FadeInUp, StaggerChildren } from './Animations';
-
-const TickerItem = ({ label, value }) => (
-  <div className="flex flex-col items-center px-8 border-r border-white/10 last:border-none">
-    <span className="text-primary font-display font-bold text-2xl md:text-3xl">{value}</span>
-    <span className="text-text-secondary text-sm uppercase tracking-widest">{label}</span>
-  </div>
-);
+import React from 'react';
+import { motion } from 'framer-motion';
 
 const Hero = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const headline = "Maximize Your Edge in Financial Markets";
+  const words = headline.split(" ");
 
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth) * 2 - 1,
-        y: (e.clientY / window.innerHeight) * 2 - 1,
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  const container = {
+    hidden: { opacity: 0 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      transition: { staggerChildren: 0.12, delayChildren: 0.04 * i },
+    }),
+  };
+
+  const child = {
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        damping: 12,
+        stiffness: 100,
+      },
+    },
+    hidden: {
+      opacity: 0,
+      y: 20,
+      transition: {
+        type: "spring",
+        damping: 12,
+        stiffness: 100,
+      },
+    },
+  };
+
+  const tickerItems = [
+    "10ms Latency", "99.9% Uptime", "500+ Clients", "NSE", "BSE", "MCX"
+  ];
 
   return (
-    <section className="relative min-h-screen flex flex-col overflow-hidden">
-      {/* Dynamic Background Mesh */}
-      <div className="absolute inset-0 -z-10">
-        <motion.div 
-          animate={{
-            x: mousePosition.x * 20,
-            y: mousePosition.y * 20,
-          }}
-          className="absolute inset-0 opacity-30"
-          style={{
-            background: `radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.15) 0%, transparent 50%)`,
-          }}
-        />
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-50 contrast-150"></div>
+    <section className="relative min-h-screen flex flex-col justify-between overflow-hidden bg-black pt-20">
+      {/* Background Gradient Mesh */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-600/10 blur-[150px] rounded-full" />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.15] mix-blend-overlay" />
       </div>
 
-      {/* Hero Content */}
-      <div className="flex-1 flex flex-col items-center justify-center container mx-auto px-4 relative z-10 text-center pt-32 pb-20">
-        <StaggerChildren delay={0.2}>
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col items-center justify-center container mx-auto px-6 relative z-10 text-center">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="visible"
+          className="max-w-5xl"
+        >
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white mb-8 leading-[1.1] tracking-tight">
+            {words.map((word, index) => (
+              <motion.span
+                variants={child}
+                key={index}
+                className="inline-block mr-[0.25em]"
+              >
+                {word}
+              </motion.span>
+            ))}
+          </h1>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.8, ease: "easeOut" }}
+            className="text-text-secondary text-xl md:text-2xl max-w-2xl mx-auto mb-12"
+          >
+            Ultra-low latency HFT solutions built for precision and speed.
+          </motion.p>
+
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="inline-block px-4 py-1.5 mb-6 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-sm"
+            transition={{ delay: 1.2, duration: 0.5 }}
+            className="flex flex-col sm:flex-row gap-6 justify-center"
           >
-            <span className="text-primary text-sm font-medium tracking-wider uppercase">
-              Trading at the speed of light
-            </span>
+            <button className="px-10 py-4 bg-primary text-black font-bold rounded-full hover:shadow-[0_0_25px_rgba(0,212,255,0.6)] transition-all duration-300 hover:scale-105 active:scale-95">
+              Get Started
+            </button>
+            <button className="px-10 py-4 border border-white/20 text-white font-bold rounded-full hover:bg-white/5 hover:border-white/40 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+              Learn More
+            </button>
           </motion.div>
-
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold tracking-tight text-white mb-8 leading-[0.9]">
-            Precision <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-primary bg-[length:200%_auto] animate-[gradient_4s_linear_infinite] drop-shadow-[0_0_15px_rgba(0,212,255,0.3)]">
-              Performance
-            </span>
-          </h1>
-
-          <p className="text-text-secondary text-lg md:text-2xl max-w-3xl mx-auto mb-12 leading-relaxed">
-            Harness the power of ultra-low latency execution and advanced algorithmic strategies. Engineered for the most demanding financial markets.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <button className="group relative px-10 py-4 bg-primary text-black font-bold rounded-full overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(0,212,255,0.4)] hover:shadow-[0_0_30px_rgba(0,212,255,0.6)]">
-              <span className="relative z-10">Start Trading</span>
-              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
-            </button>
-            
-            <button className="px-10 py-4 border border-white/20 text-white font-bold rounded-full hover:bg-white/5 transition-all duration-300 backdrop-blur-sm">
-              Explore Solutions
-            </button>
-          </div>
-        </StaggerChildren>
+        </motion.div>
       </div>
 
-      {/* Numbers Ticker - Now relatively positioned at bottom of flex container */}
-      <div className="w-full border-y border-white/5 bg-black/50 backdrop-blur-md py-12 mb-12">
-        <FadeInUp delay={1}>
-          <div className="container mx-auto px-4 flex flex-wrap justify-center gap-y-8 md:gap-y-0">
-            <TickerItem value="10ms" label="Latency" />
-            <TickerItem value="99.9%" label="Uptime" />
-            <TickerItem value="500+" label="Global Clients" />
-            <TickerItem value="$2.4B" label="Volume Daily" />
-          </div>
-        </FadeInUp>
+      {/* Infinite Ticker Bar */}
+      <div className="relative z-10 py-8 bg-white/5 backdrop-blur-md border-y border-white/10 overflow-hidden">
+        <div className="flex whitespace-nowrap animate-ticker">
+          {[...tickerItems, ...tickerItems, ...tickerItems].map((item, index) => (
+            <div key={index} className="flex items-center">
+              <span className="text-white text-sm font-display font-medium tracking-widest px-12 uppercase">{item}</span>
+              <span className="text-primary/40 text-xl font-light">|</span>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Custom Styles for Gradient Animation */}
       <style>{`
-        @keyframes gradient {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+        @keyframes ticker {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.33%); }
+        }
+        .animate-ticker {
+          animation: ticker 30s linear infinite;
         }
       `}</style>
     </section>
