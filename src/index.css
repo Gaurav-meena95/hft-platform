@@ -52,6 +52,49 @@ html.lenis {
   pointer-events: none;
 }
 
+/* Global Polish */
+.noise-overlay {
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.05;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+.nav-link {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-primary);
+  transform: translateX(-101%);
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover::after {
+  transform: translateX(0);
+}
+
+.cursor-pointer-all * {
+  cursor: default;
+}
+
+.cursor-pointer-all a, 
+.cursor-pointer-all button,
+.cursor-pointer-all [role="button"] {
+  cursor: pointer;
+}
+
 /* Custom Utilities */
 .text-glow {
   text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
@@ -59,8 +102,9 @@ html.lenis {
 
 .glass {
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
 .border-glow {
@@ -80,4 +124,16 @@ html.lenis {
 
 .border-glow:hover::after {
   opacity: 1;
+}
+
+/* Animations Trigger Helper */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-on-scroll.active {
+  opacity: 1;
+  transform: translateY(0);
 }
