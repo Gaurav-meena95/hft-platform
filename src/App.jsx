@@ -3,6 +3,8 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Stats from './components/Stats'
 import Features from './components/Features'
+import About from './components/About'
+import Solutions from './components/Solutions'
 
 function App() {
   return (
@@ -12,6 +14,9 @@ function App() {
       
       <Stats />
       <Features />
+      
+      <About />
+      <Solutions />
       
       <footer className="py-20 border-t border-white/5 bg-black relative z-10">
         <div className="container mx-auto px-6 text-center text-text-secondary">
