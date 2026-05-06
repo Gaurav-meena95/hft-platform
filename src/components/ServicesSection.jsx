@@ -1,135 +1,187 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useMemo, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Check } from 'lucide-react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Float } from '@react-three/drei';
+import * as THREE from 'three';
+
+// --- 3D ORDER BOOK COMPONENT ---
+const OrderBook3D = () => {
+  const groupRef = useRef();
+
+  const levels = useMemo(() => {
+    return Array.from({ length: 24 }).map((_, i) => {
+      const isBuy = i < 12;
+      const index = isBuy ? i : i - 12;
+      // Spread them out on Y axis, leaving a gap in the middle for the spread
+      const y = isBuy ? (index * 0.35) + 0.5 : (-index * 0.35) - 0.5;
+      const color = isBuy ? "#22c55e" : "#ef4444";
+      return {
+        y,
+        color,
+        baseWidth: Math.random() * 3 + 1,
+        isBuy,
+        speedOffset: Math.random() * 10
+      };
+    });
+  }, []);
+
+  useFrame((state) => {
+    const time = state.clock.getElapsedTime();
+    if (groupRef.current) {
+      groupRef.current.rotation.y = Math.sin(time * 0.3) * 0.2 - 0.2;
+      groupRef.current.rotation.x = 0.1;
+
+      groupRef.current.children.forEach((child, i) => {
+        const level = levels[i];
+        // Simulate rapid high-frequency trading changes in order book volume
+        const noise = Math.sin(time * 5 + level.speedOffset) * Math.cos(time * 8 + i) * 1.5;
+        const width = Math.max(0.2, level.baseWidth + noise);
+
+        child.scale.x = width;
+        // Align bars to the center spread line
+        child.position.x = level.isBuy ? width / 2 : width / 2;
+      });
+    }
+  });
+
+  return (
+    <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
+      <group position={[-1, 0, 0]}>
+        {/* Center Spread Line (static) */}
+        <mesh position={[0, 0, 0]}>
+          <boxGeometry args={[0.02, 10, 0.5]} />
+          <meshBasicMaterial color="#ffffff" transparent opacity={0.3} />
+        </mesh>
+
+        {/* Animated Order Book Levels */}
+        <group ref={groupRef}>
+          {levels.map((level, i) => (
+            <mesh key={i} position={[0, level.y, 0]}>
+              <boxGeometry args={[1, 0.2, 0.5]} />
+              <meshBasicMaterial color={level.color} transparent opacity={0.7} blending={THREE.AdditiveBlending} />
+            </mesh>
+          ))}
+        </group>
+      </group>
+    </Float>
+  );
+};
 
 const ServicesSection = () => {
   const [activeTab, setActiveTab] = useState(0);
 
   const tabs = [
-    "SRHFT Engine",
+    "ORION QUANT Engine",
     "Technical Infrastructure",
-    "Backtesting"
+    "Backtesting & Analytics"
   ];
 
   const tabContents = [
     [
-      "Sub-millisecond execution speeds",
-      "Direct API access to major exchanges",
-      "Advanced algorithmic order routing"
+      "Rule based execution",
+      "Traceable processes",
+      "Audit logs"
     ],
     [
-      "Dedicated institutional VPS setup",
-      "Redundant power and network lines",
-      "24/7 technical monitoring"
+      "Low latency infra",
+      "Co-location ready",
+      "99.9% uptime"
     ],
     [
-      "Tick-level historical data access",
-      "Custom strategy simulation environments",
-      "Real-time analytics dashboard"
+      "Crisis period testing",
+      "Simulation analysis",
+      "Benchmarking"
     ]
   ];
 
   return (
-    <section id="solutions" className="py-32 bg-background relative z-10 border-t border-border">
-      <div className="container mx-auto px-6 max-w-6xl">
+    <section id="solutions" className="py-32 bg-surface relative z-10 overflow-hidden">
+      <div className="container mx-auto px-6 max-w-6xl relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-display font-medium text-white mb-6">
-            Tailored Software Infrastructure
+          <h4 className="text-nebula-1 text-xs font-bold tracking-[0.3em] uppercase mb-6">
+            OUR SERVICES
+          </h4>
+          <h2 className="text-4xl md:text-5xl font-display font-medium text-white max-w-3xl leading-tight">
+            Tailored Software Infrastructure for Corporate Capital
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Left Column: Tabs */}
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-start">
+          {/* Left: Tabs and Content */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
+            className="w-full lg:w-1/2"
           >
-            <div className="flex gap-6 mb-12 border-b border-border relative">
+            <div className="flex overflow-x-auto no-scrollbar border-b border-white/10 mb-8 relative">
               {tabs.map((tab, i) => (
                 <button
                   key={i}
                   onClick={() => setActiveTab(i)}
-                  className={`pb-4 text-sm font-medium transition-all relative ${
-                    activeTab === i 
-                      ? 'text-white' 
-                      : 'text-text-secondary hover:text-white'
-                  }`}
+                  className={`px-6 py-4 whitespace-nowrap text-sm font-bold tracking-[0.1em] uppercase transition-colors relative ${activeTab === i ? 'text-nebula-1' : 'text-text-muted hover:text-white'
+                    }`}
                 >
                   {tab}
                   {activeTab === i && (
-                    <motion.div 
-                      layoutId="tabUnderline"
-                      className="absolute bottom-0 left-0 right-0 h-[1px] bg-primary"
+                    <motion.div
+                      layoutId="serviceTabIndicator"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-nebula-1 shadow-[0_0_10px_rgba(0,212,255,0.8)]"
                     />
                   )}
                 </button>
               ))}
             </div>
 
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="bg-transparent"
-              >
-                <ul className="space-y-6">
+            <div className="min-h-[150px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="space-y-4"
+                >
                   {tabContents[activeTab].map((item, i) => (
-                    <li key={i} className="flex items-center gap-4">
-                      <div className="w-4 h-4 rounded-full border border-border flex items-center justify-center shrink-0">
-                        <svg className="w-2 h-2 text-white" viewBox="0 0 14 10" fill="none">
-                          <path d="M1 5L5 9L13 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
+                    <div key={i} className="flex items-center gap-4 text-lg">
+                      <div className="w-6 h-6 rounded-full bg-nebula-1/10 flex items-center justify-center shrink-0">
+                        <Check size={14} className="text-nebula-1" />
                       </div>
-                      <span className="text-text-secondary font-light">{item}</span>
-                    </li>
+                      <span className="text-white font-light">{item}</span>
+                    </div>
                   ))}
-                </ul>
-              </motion.div>
-            </AnimatePresence>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </motion.div>
 
-          {/* Right Column: Pipeline Diagram */}
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
+          {/* Right: 3D Market Depth / Order Book Animation */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex items-center justify-center bg-transparent border border-border rounded-sm p-8 lg:p-12"
+            className="w-full lg:w-1/2 h-[400px] bg-black/30 border border-white/5 rounded backdrop-blur-sm flex items-center justify-center relative"
           >
-            <div className="flex w-full items-center justify-between relative">
-              {/* Connecting lines */}
-              <div className="absolute left-0 right-0 h-px top-1/2 -translate-y-1/2 bg-border z-0">
-                <motion.div 
-                  initial={{ x: "-100%" }}
-                  animate={{ x: "100%" }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                  className="w-1/2 h-full bg-gradient-to-r from-transparent via-primary to-transparent"
-                />
-              </div>
-
-              {['Data Sources', 'Processing Logic', 'Platform API', 'Executed'].map((node, i) => (
-                <div key={i} className="relative flex flex-col items-center">
-                  <motion.div 
-                    animate={{ boxShadow: ['0 0 0 rgba(0,212,255,0)', '0 0 15px rgba(0,212,255,0.15)', '0 0 0 rgba(0,212,255,0)'] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
-                    className="w-12 h-12 bg-background border border-border rounded flex items-center justify-center relative z-10"
-                  >
-                    <div className="w-2 h-2 bg-text-secondary rounded-full" />
-                  </motion.div>
-                  <span className="absolute top-16 text-[10px] text-text-secondary whitespace-nowrap uppercase tracking-wider">{node}</span>
-                </div>
-              ))}
+            <div className="absolute top-4 left-6 z-10 flex flex-col gap-1">
+              <span className="text-white text-xs font-bold tracking-widest uppercase">Live Market Depth</span>
+              <span className="text-nebula-1 text-[10px] font-mono">HFT Order Book Simulation</span>
             </div>
+            <Suspense fallback={null}>
+              <Canvas camera={{ position: [0, 0, 8], fov: 45 }}>
+                <ambientLight intensity={0.5} />
+                <OrderBook3D />
+              </Canvas>
+            </Suspense>
           </motion.div>
         </div>
       </div>

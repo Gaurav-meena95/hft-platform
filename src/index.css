@@ -1,38 +1,98 @@
 @import "tailwindcss";
+
 @theme {
-  --color-background: #0b0d0f;
-  --color-surface: #0b0d0f;
-  --color-primary: #00d4ff;
-  --color-accent: #00d4ff;
+  --color-background: #000000;
+  --color-surface: #0a0a0f;
+  --color-nebula-1: #00d4ff;
+  --color-nebula-2: #7c3aed;
+  --color-gold: #f59e0b;
   --color-text-primary: #ffffff;
-  --color-text-secondary: #888888;
-  --color-border: #1a1a1a;
-  
+  --color-text-muted: #6b7280;
+
   --font-sans: "Inter", sans-serif;
   --font-display: "Space Grotesk", sans-serif;
 }
 
-:root {
-  color-scheme: dark;
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
 }
 
-html {
-  scroll-behavior: initial;
+/* Custom Utilities */
+.text-glow {
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100%;
-  background-color: var(--color-background);
-  color: var(--color-text-primary);
-  overflow-x: hidden;
-  font-family: var(--font-sans);
+.box-glow {
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
 }
 
-/* Lenis smooth scroll styles */
+.box-glow-hover:hover {
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+}
+
+/* Ticker Animation */
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-ticker {
+  animation: ticker 30s linear infinite;
+  display: flex;
+  white-space: nowrap;
+}
+
+/* SVG Line Drawing */
+.draw-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: draw 1.5s ease forwards;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Pipeline Dash Animation */
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+.animate-dash {
+  animation: dash-flow 1s linear infinite;
+}
+
+/* Hide default cursor only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none;
+  }
+
+  a,
+  button,
+  [role="button"],
+  input,
+  select,
+  textarea {
+    cursor: none;
+  }
+}
+
+/* Disable smooth scroll polyfill if using Lenis */
 html.lenis {
   height: auto;
 }
@@ -51,88 +111,4 @@ html.lenis {
 
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
-}
-
-/* Global Polish */
-.noise-overlay {
-  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
-  opacity: 0.05;
-  pointer-events: none;
-  mix-blend-mode: overlay;
-}
-
-.will-change-transform {
-  will-change: transform;
-}
-
-.nav-link {
-  position: relative;
-  overflow: hidden;
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background-color: var(--color-primary);
-  transform: translateX(-101%);
-  transition: transform 0.3s ease;
-}
-
-.nav-link:hover::after {
-  transform: translateX(0);
-}
-
-.cursor-pointer-all * {
-  cursor: default;
-}
-
-.cursor-pointer-all a, 
-.cursor-pointer-all button,
-.cursor-pointer-all [role="button"] {
-  cursor: pointer;
-}
-
-/* Custom Utilities */
-.text-glow {
-  text-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
-}
-
-.glass {
-  background: transparent;
-  border: 1px solid var(--color-border);
-}
-
-.border-glow {
-  position: relative;
-}
-
-.border-glow::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  background: transparent;
-  z-index: -1;
-  border-radius: inherit;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.border-glow:hover::after {
-  opacity: 1;
-}
-
-/* Animations Trigger Helper */
-.reveal-on-scroll {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.reveal-on-scroll.active {
-  opacity: 1;
-  transform: translateY(0);
 }

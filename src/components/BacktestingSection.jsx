@@ -1,117 +1,137 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const BacktestingSection = () => {
   const [activeYear, setActiveYear] = useState(0);
 
-  const timeline = [
-    { year: "2020", title: "COVID-19 Global Crash", desc: "Maintained complete stability and executed protective stops during the historic V-shaped recovery." },
-    { year: "2021", title: "Crypto Volatility Spike", desc: "Adapted to unusual cross-asset correlations, maintaining edge in highly volatile sessions." },
-    { year: "Feb 2022", title: "Russia-Ukraine War", desc: "Handled extreme geopolitical shocks and liquidity gaps without systemic failure." },
-    { year: "2023", title: "Global Liquidity Crisis", desc: "Optimized execution algorithms adapted to thin order books and widening spreads." },
-    { year: "2024", title: "AI Market Disruption", desc: "Successfully navigated algorithmic feedback loops driven by new AI trading models." }
+  const crises = [
+    {
+      year: "2020",
+      title: "COVID-19 Global Crash",
+      desc: "During the fastest market drop in history, the ORION QUANT engine maintained 100% uptime, executing protective stops within milliseconds and actively managing downside exposure across all connected accounts."
+    },
+    {
+      year: "Feb 2022",
+      title: "Russia-Ukraine War",
+      desc: "In extreme volatility and gap-downs, the system recalibrated latency-sensitive algorithms, preventing slippage and optimizing entry points during liquidity vacuums."
+    },
+    {
+      year: "Sep 2022",
+      title: "UK Mini-Budget Flash Crash",
+      desc: "As forex and bond markets experienced unprecedented intra-day swings, strict risk protocols isolated capital from erratic spread widening."
+    },
+    {
+      year: "2023",
+      title: "Global Liquidity Crisis",
+      desc: "During banking sector instability, the engine dynamically adjusted to thinning order books, ensuring execution consistency without manual intervention."
+    },
+    {
+      year: "2024",
+      title: "AI Market Disruption",
+      desc: "Navigating sudden algorithmic shifts and tech-driven flash movements, the infrastructure maintained its edge through sub-millisecond reaction times."
+    }
   ];
 
   const metrics = [
-    { name: "Execution Consistency", value: 99.9 },
-    { name: "Downside Control", value: 95.5 },
-    { name: "Recovery Behavior", value: 92.0 },
-    { name: "Drawdown Prevention", value: 96.8 },
-    { name: "Latency Preservation", value: 99.5 }
+    { label: "Execution Consistency", value: 92 },
+    { label: "Downside Control", value: 87 },
+    { label: "Recovery Behavior", value: 79 },
+    { label: "Risk Protocols Active", value: 95 }
   ];
 
   return (
-    <section id="technology" className="py-32 bg-background relative z-10 border-t border-border">
+    <section className="py-32 bg-background relative z-10">
       <div className="container mx-auto px-6 max-w-6xl">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="mb-24"
+          className="mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-display font-medium text-white mb-6">
-            Stability even during crises
+          <h4 className="text-nebula-1 text-xs font-bold tracking-[0.3em] uppercase mb-6">
+            RESULTS / BACKTESTING
+          </h4>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium text-white max-w-4xl leading-tight">
+            Stability even during crises and market downturns
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-32">
-          {/* Left Column: Timeline list */}
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 mb-24">
+          {/* Left side: Timeline */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col gap-2"
+            className="w-full lg:w-1/3 flex flex-col space-y-4"
           >
-            {timeline.map((item, i) => (
-              <button 
-                key={i} 
+            {crises.map((item, i) => (
+              <button
+                key={i}
                 onClick={() => setActiveYear(i)}
-                className={`w-full text-left px-6 py-5 flex items-center justify-between border-l-2 transition-all ${
-                  activeYear === i 
-                    ? 'border-primary bg-white/5' 
-                    : 'border-transparent hover:bg-white/[0.02]'
-                }`}
+                className={`text-left pl-6 py-3 border-l-2 transition-all duration-300 ${activeYear === i
+                    ? 'border-nebula-1 bg-nebula-1/5'
+                    : 'border-white/10 hover:border-white/30 hover:bg-white/5'
+                  }`}
               >
-                <span className={`text-lg transition-colors ${activeYear === i ? 'text-white font-medium' : 'text-text-secondary font-light'}`}>
-                  {item.year} — {item.title}
-                </span>
+                <div className={`font-display font-bold text-lg mb-1 transition-colors ${activeYear === i ? 'text-white' : 'text-text-muted'
+                  }`}>
+                  {item.year}
+                </div>
+                <div className={`text-sm transition-colors ${activeYear === i ? 'text-nebula-1' : 'text-text-muted'
+                  }`}>
+                  {item.title}
+                </div>
               </button>
             ))}
           </motion.div>
 
-          {/* Right Column: Description */}
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
+          {/* Right side: Detail View & Metrics */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex items-center min-h-[200px]"
+            className="w-full lg:w-2/3 flex flex-col justify-center"
           >
-            <AnimatePresence mode="wait">
+            <div className="min-h-[200px] mb-12">
               <motion.div
                 key={activeYear}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
               >
-                <h3 className="text-2xl font-display font-medium text-white mb-4">{timeline[activeYear].title}</h3>
-                <p className="text-text-secondary text-lg font-light leading-relaxed">
-                  {timeline[activeYear].desc}
-                </p>
+                <h3 className="text-3xl font-display font-medium text-white mb-6">{crises[activeYear].title}</h3>
+                <p className="text-text-muted text-lg font-light leading-relaxed">{crises[activeYear].desc}</p>
               </motion.div>
-            </AnimatePresence>
+            </div>
+
+            {/* Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+              {metrics.map((metric, i) => (
+                <div key={i}>
+                  <div className="flex justify-between items-end mb-2">
+                    <span className="text-white text-sm font-medium tracking-wide">{metric.label}</span>
+                    <span className="text-nebula-1 font-display font-bold">{metric.value}%</span>
+                  </div>
+                  <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                    <motion.div
+                      className="h-full bg-gradient-to-r from-nebula-2 to-nebula-1 rounded-full shadow-[0_0_10px_rgba(0,212,255,0.5)]"
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${metric.value}%` }}
+                      viewport={{ once: true, amount: 0.1 }}
+                      transition={{ duration: 1.5, ease: "easeOut", delay: i * 0.2 + 0.5 }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </motion.div>
         </div>
-
-        {/* Bottom Metrics */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8"
-        >
-          {metrics.map((metric, i) => (
-            <div key={i} className="flex flex-col gap-3">
-              <span className="text-xs font-bold tracking-widest uppercase text-text-secondary">{metric.name}</span>
-              <div className="h-[2px] w-full bg-border relative overflow-hidden rounded-full">
-                <motion.div 
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${metric.value}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.5, ease: "easeOut", delay: i * 0.1 }}
-                  className="absolute top-0 left-0 bottom-0 bg-primary"
-                />
-              </div>
-            </div>
-          ))}
-        </motion.div>
       </div>
     </section>
   );
 };
 
-export default BacktestingSection;;
+export default BacktestingSection;
