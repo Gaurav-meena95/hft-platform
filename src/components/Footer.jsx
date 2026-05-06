@@ -1,128 +1,98 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import {  Mail, Globe, Send } from 'lucide-react';
+import { Mail, Phone } from 'lucide-react';
 
 const Footer = () => {
+  const tickerText = "SRHFT Technologies · Institutional Trading Infrastructure · Speed. Precision. Edge. · ";
+
   return (
-    <footer className="bg-[#050505] pt-24 pb-12 relative overflow-hidden border-t border-white/5">
-      {/* Top glowing border decoration */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent shadow-[0_0_20px_rgba(0,212,255,0.4)]" />
+    <footer className="bg-background pt-32 relative overflow-hidden border-t border-border">
+      
+      <div className="container mx-auto px-6 mb-24">
+        <h2 className="text-4xl md:text-6xl font-display font-medium text-white max-w-4xl tracking-tight leading-tight">
+          The next logical step for modern trading.
+        </h2>
+      </div>
+
+      {/* Ticker */}
+      <div className="relative z-10 py-5 bg-transparent border-y border-border overflow-hidden mb-24">
+        <div className="flex whitespace-nowrap animate-ticker">
+          {[...Array(8)].map((_, index) => (
+            <span key={index} className="text-text-secondary text-xs font-display tracking-[0.2em] px-4 uppercase">
+              {tickerText}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes ticker {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-ticker {
+          animation: ticker 40s linear infinite;
+        }
+      `}</style>
 
       <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-20">
-          {/* Logo & Tagline */}
-          <div className="space-y-8">
-            <div className="flex items-center gap-2 group cursor-pointer">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
-                <div className="w-4 h-4 bg-black rounded-sm transform rotate-45" />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-24">
+          {/* Logo Column */}
+          <div className="md:col-span-2 space-y-6">
+            <div className="flex items-center gap-2 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <div className="w-8 h-8 bg-primary rounded flex items-center justify-center transition-transform duration-300">
+                <div className="w-3 h-3 bg-background rounded-sm transform rotate-45" />
               </div>
-              <span className="text-2xl font-display font-bold text-white tracking-tighter">
+              <span className="text-xl font-display font-bold text-white tracking-tight">
                 SR<span className="text-primary">HFT</span>
               </span>
             </div>
-            <p className="text-text-secondary leading-relaxed text-sm md:text-base">
-              Speed. Precision. Edge. <br />
-              The ultimate high-frequency trading platform for institutional excellence.
+            <p className="text-text-secondary max-w-xs font-light leading-relaxed">
+              Tailored software infrastructure for corporate capital, engineered for maximum reliability and control.
             </p>
-            <div className="flex gap-4">
-              {[ Globe, Mail].map((Icon, i) => (
-                <a 
-                  key={i} 
-                  href="#" 
-                  className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-primary hover:border-primary transition-all duration-300 hover:shadow-[0_0_15px_rgba(0,212,255,0.4)] will-change-transform active:scale-90"
-                >
-                  <Icon size={20} />
-                </a>
-              ))}
-            </div>
           </div>
 
-          {/* Links Columns */}
-          <div className="lg:pl-10">
-            <h4 className="text-white font-bold mb-8 uppercase tracking-[0.2em] text-xs">Company</h4>
-            <ul className="space-y-4">
-              {['Home', 'About', 'Solutions', 'Blog'].map((item) => (
-                <li key={item}>
-                  <button 
-                    onClick={() => {
-                      if (item === 'Home') window.scrollTo({ top: 0, behavior: 'smooth' });
-                      else {
-                        const id = item.toLowerCase();
-                        const element = document.getElementById(id);
-                        if (element) {
-                          const offset = 80;
-                          const bodyRect = document.body.getBoundingClientRect().top;
-                          const elementRect = element.getBoundingClientRect().top;
-                          const elementPosition = elementRect - bodyRect;
-                          const offsetPosition = elementPosition - offset;
-                          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                        }
-                      }
-                    }}
-                    className="text-text-secondary hover:text-primary transition-colors duration-300 text-sm md:text-base text-left"
-                  >
-                    {item}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
+          {/* Links Column 1 */}
           <div>
-            <h4 className="text-white font-bold mb-8 uppercase tracking-[0.2em] text-xs">Solutions</h4>
+            <h4 className="text-white text-xs font-bold tracking-widest uppercase mb-6">Company</h4>
             <ul className="space-y-4">
-              {[
-                { name: 'Trading APIs', id: 'solutions' },
-                { name: 'Market Data', id: 'solutions' },
-                { name: 'Custom Solutions', id: 'solutions' },
-                { name: 'RMS', id: 'solutions' }
-              ].map((item) => (
-                <li key={item.name}>
-                  <button 
-                    onClick={() => {
-                      const element = document.getElementById(item.id);
-                      if (element) {
-                        const offset = 80;
-                        const bodyRect = document.body.getBoundingClientRect().top;
-                        const elementRect = element.getBoundingClientRect().top;
-                        const elementPosition = elementRect - bodyRect;
-                        const offsetPosition = elementPosition - offset;
-                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                      }
-                    }}
-                    className="text-text-secondary hover:text-primary transition-colors duration-300 text-sm md:text-base text-left"
-                  >
-                    {item.name}
-                  </button>
+              {['About Us', 'Solutions', 'Technology', 'Contact'].map((item) => (
+                <li key={item}>
+                  <a href="#" className="text-text-secondary font-light hover:text-white transition-colors text-sm">
+                    {item}
+                  </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Newsletter */}
-          <div className="space-y-8">
-            <h4 className="text-white font-bold uppercase tracking-[0.2em] text-xs">Newsletter</h4>
-            <p className="text-text-secondary text-sm leading-relaxed">Stay updated with the latest in HFT technology and market insights.</p>
-            <div className="relative group">
-              <input 
-                type="email" 
-                placeholder="Email address" 
-                className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-white outline-none focus:border-primary transition-all duration-300"
-              />
-              <button className="absolute right-2 top-2 bottom-2 px-4 bg-primary text-black rounded-lg hover:bg-white transition-all duration-300 active:scale-95 shadow-[0_0_15px_rgba(0,212,255,0.2)]">
-                <Send size={18} />
-              </button>
-            </div>
+          {/* Links Column 2 */}
+          <div>
+            <h4 className="text-white text-xs font-bold tracking-widest uppercase mb-6">Resources</h4>
+            <ul className="space-y-4">
+              {['Documentation', 'API Reference', 'Status', 'Privacy Policy'].map((item) => (
+                <li key={item}>
+                  <a href="#" className="text-text-secondary font-light hover:text-white transition-colors text-sm">
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-text-secondary text-[10px] md:text-xs tracking-widest uppercase">© 2024 SRHFT Solution Pvt Ltd. All rights reserved.</p>
-          <div className="flex gap-8">
-            {['Privacy Policy', 'Terms & Conditions', 'Refund Policy'].map((item) => (
-              <a key={item} href="#" className="text-text-secondary text-[10px] md:text-xs uppercase tracking-widest hover:text-white transition-colors duration-300">{item}</a>
-            ))}
+        <div className="py-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-text-secondary text-sm font-light">© 2024 SRHFT Solution Pvt Ltd</p>
+          <div className="flex gap-6">
+            <a href="#" className="text-text-secondary hover:text-white transition-colors">
+              <Mail size={18} />
+            </a>
+            <a href="#" className="text-text-secondary hover:text-white transition-colors">
+              <Phone size={18} />
+            </a>
+            <a href="#" className="text-text-secondary hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            </a>
           </div>
         </div>
       </div>

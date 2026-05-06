@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
-import Stats from './components/Stats'
-import Features from './components/Features'
-import About from './components/About'
-import Solutions from './components/Solutions'
-import Contact from './components/Contact'
+import BusinessModel from './components/BusinessModel'
+import ServicesSection from './components/ServicesSection'
+import BacktestingSection from './components/BacktestingSection'
+import RiskProtocolsSection from './components/RiskProtocolsSection'
+import FAQSection from './components/FAQSection'
+import ProcessSection from './components/ProcessSection'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 import Loader from './components/Loader'
@@ -16,7 +17,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // FIX 2: Faster loader duration (800ms + transition)
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 800);
@@ -26,7 +26,6 @@ function App() {
 
   useEffect(() => {
     if (!isLoading) {
-      // Initialize Lenis ONLY after loader completes
       const lenis = new Lenis({
         duration: 1.2,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -65,20 +64,17 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="relative min-h-screen bg-black overflow-hidden selection:bg-primary selection:text-black"
+            className="relative min-h-screen bg-background overflow-hidden selection:bg-primary selection:text-white"
           >
             <Navbar />
             <Hero />
-            
-            <Stats />
-            <Features />
-            
-            <About />
-            <Solutions />
-            
-            <Contact />
+            <BusinessModel />
+            <ServicesSection />
+            <BacktestingSection />
+            <RiskProtocolsSection />
+            <FAQSection />
+            <ProcessSection />
             <Footer />
-            
             <ScrollToTop />
           </motion.main>
         )}

@@ -2,151 +2,116 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const Hero = () => {
-  const headline = "Maximize Your Edge in Financial Markets";
-  const words = headline.split(" ");
+  const line1 = "A Structured Approach to".split(" ");
+  const line2 = "High Frequency Trading".split(" ");
 
   const container = {
-    hidden: { opacity: 0 },
-    visible: (i = 1) => ({
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.3 * i },
-    }),
-  };
-
-  const child = {
+    hidden: { opacity: 1 },
     visible: {
       opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        damping: 20,
-        stiffness: 80,
-      },
-    },
-    hidden: {
-      opacity: 0,
-      y: 30,
-      transition: {
-        type: "spring",
-        damping: 20,
-        stiffness: 80,
-      },
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
     },
   };
 
-  const tickerItems = [
-    "10ms Latency", "99.9% Uptime", "500+ Clients", "NSE", "BSE", "MCX"
-  ];
+  const wordAnim = {
+    hidden: { y: "100%" },
+    visible: { y: "0%", transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+  };
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-between overflow-hidden bg-black pt-20">
-      {/* Background Polish: Gradient + Noise */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-primary/15 blur-[120px] rounded-full animate-pulse will-change-transform" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-600/10 blur-[150px] rounded-full will-change-transform" />
-        <div className="absolute inset-0 noise-overlay opacity-10" />
+    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-background pt-32 pb-20">
+      {/* Subtle Background Gradient */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
+        <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-primary/5 blur-[120px] rounded-full" />
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center justify-center container mx-auto px-6 relative z-10 text-center py-20">
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="max-w-5xl"
-        >
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-bold text-white mb-8 leading-[1.1] tracking-tight will-change-transform">
-            {words.map((word, index) => (
-              <motion.span
-                variants={child}
-                key={index}
-                className="inline-block mr-[0.2em]"
-              >
-                {word}
-              </motion.span>
-            ))}
-          </h1>
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-4xl">
+          <motion.h1
+            variants={container}
+            initial="hidden"
+            animate="visible"
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] font-display font-medium text-white mb-8 leading-[1.1] tracking-tight"
+          >
+            <div className="flex flex-wrap gap-x-4 mb-2">
+              {line1.map((word, i) => (
+                <div key={i} className="overflow-hidden inline-block">
+                  <motion.div variants={wordAnim} className="inline-block text-text-secondary">
+                    {word}
+                  </motion.div>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-x-4">
+              {line2.map((word, i) => (
+                <div key={i} className="overflow-hidden inline-block">
+                  <motion.div variants={wordAnim} className="inline-block text-white">
+                    {word}
+                  </motion.div>
+                </div>
+              ))}
+            </div>
+          </motion.h1>
           
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}
-            className="text-text-secondary text-lg md:text-2xl max-w-2xl mx-auto mb-12 will-change-transform"
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
+            className="text-text-secondary text-lg md:text-xl max-w-xl mb-12 font-light leading-relaxed"
           >
-            Ultra-low latency HFT solutions built for precision and speed.
+            SRHFT Engine enables structured and controlled execution on your own accounts in financial markets.
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ delay: 1.5, duration: 0.6 }}
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.8, ease: "easeOut" }}
+            className="flex flex-col sm:flex-row gap-6 items-start sm:items-center mb-24"
           >
             <button 
               onClick={() => {
-                const element = document.getElementById('contact');
-                const offset = 80;
-                const bodyRect = document.body.getBoundingClientRect().top;
-                const elementRect = element.getBoundingClientRect().top;
-                const elementPosition = elementRect - bodyRect;
-                const offsetPosition = elementPosition - offset;
-
-                window.scrollTo({
-                  top: offsetPosition,
-                  behavior: 'smooth'
-                });
+                const el = document.getElementById('contact');
+                if(el) el.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="group relative px-10 py-4 bg-primary text-black font-bold rounded-full transition-all duration-500 hover:shadow-[0_0_30px_rgba(0,212,255,0.6)] hover:scale-105 active:scale-95 will-change-transform"
+              className="px-8 py-4 bg-primary text-black font-semibold rounded-sm hover:bg-primary/90 transition-colors w-full sm:w-auto"
             >
-              Get Started
-              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity rounded-full" />
+              Request First Call
             </button>
             <button 
               onClick={() => {
-                const element = document.getElementById('technology');
-                const offset = 80;
-                const bodyRect = document.body.getBoundingClientRect().top;
-                const elementRect = element.getBoundingClientRect().top;
-                const elementPosition = elementRect - bodyRect;
-                const offsetPosition = elementPosition - offset;
-
-                window.scrollTo({
-                  top: offsetPosition,
-                  behavior: 'smooth'
-                });
+                const el = document.getElementById('solutions');
+                if(el) el.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="px-10 py-4 border border-white/20 text-white font-bold rounded-full hover:bg-white/5 hover:border-white/40 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] will-change-transform active:scale-95"
+              className="px-8 py-4 border border-border text-white font-semibold rounded-sm hover:bg-white/5 transition-colors w-full sm:w-auto"
             >
-              Learn More
+              View Solutions
             </button>
           </motion.div>
-        </motion.div>
-      </div>
 
-      {/* Infinite Ticker Bar - Refined Speed */}
-      <div className="relative z-10 py-8 bg-white/5 backdrop-blur-md border-y border-white/10 overflow-hidden">
-        <div className="flex whitespace-nowrap animate-ticker will-change-transform">
-          {[...tickerItems, ...tickerItems, ...tickerItems, ...tickerItems].map((item, index) => (
-            <div key={index} className="flex items-center">
-              <span className="text-white/80 text-xs sm:text-sm font-display font-medium tracking-widest px-8 sm:px-16 uppercase">{item}</span>
-              <span className="text-primary/30 text-xl font-light">|</span>
+          {/* Highlight Cards */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
+            <div className="p-6 bg-transparent border border-border rounded-sm text-left hover:-translate-y-1 transition-transform duration-300">
+              <h3 className="text-white font-semibold mb-2 flex items-center gap-3">
+                <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
+                Capital Protection
+              </h3>
+              <p className="text-text-secondary text-sm">Customizable risk management</p>
             </div>
-          ))}
+            <div className="p-6 bg-transparent border border-border rounded-sm text-left hover:-translate-y-1 transition-transform duration-300">
+              <h3 className="text-white font-semibold mb-2 flex items-center gap-3">
+                <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
+                Instant Deployment
+              </h3>
+              <p className="text-text-secondary text-sm">Simple system integration</p>
+            </div>
+          </motion.div>
         </div>
       </div>
-
-      <style>{`
-        @keyframes ticker {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-ticker {
-          animation: ticker 40s linear infinite;
-        }
-      `}</style>
     </section>
   );
 };

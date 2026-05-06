@@ -1,11 +1,12 @@
 @import "tailwindcss";
 @theme {
-  --color-background: #000000;
-  --color-surface: #0a0a0a;
+  --color-background: #0b0d0f;
+  --color-surface: #0b0d0f;
   --color-primary: #00d4ff;
   --color-accent: #00d4ff;
   --color-text-primary: #ffffff;
-  --color-text-secondary: #a1a1aa;
+  --color-text-secondary: #888888;
+  --color-border: #1a1a1a;
   
   --font-sans: "Inter", sans-serif;
   --font-display: "Space Grotesk", sans-serif;
@@ -25,10 +26,10 @@ body {
   padding: 0;
   width: 100%;
   min-height: 100%;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
   overflow-x: hidden;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
 }
 
 /* Lenis smooth scroll styles */
@@ -97,14 +98,12 @@ html.lenis {
 
 /* Custom Utilities */
 .text-glow {
-  text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+  text-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  background: transparent;
+  border: 1px solid var(--color-border);
 }
 
 .border-glow {
@@ -115,7 +114,7 @@ html.lenis {
   content: '';
   position: absolute;
   inset: -1px;
-  background: linear-gradient(45deg, transparent, #00d4ff, transparent);
+  background: transparent;
   z-index: -1;
   border-radius: inherit;
   opacity: 0;
