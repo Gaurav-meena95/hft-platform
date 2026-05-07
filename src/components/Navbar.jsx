@@ -5,173 +5,92 @@ import { Menu, X } from 'lucide-react';
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
 
   const navLinks = [
     { name: 'Solutions', id: 'solutions' },
-    { name: 'Technology', id: 'technology' },
-    { name: 'About', id: 'about' },
+    { name: 'Strategy', id: 'strategy' },
+    { name: 'Performance', id: 'performance' },
     { name: 'Contact', id: 'contact' }
   ];
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
-
-      const sections = ['solutions', 'technology', 'about', 'contact'];
-      let current = '';
-      
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 200) {
-            current = section;
-          }
-        }
-      }
-      setActiveSection(current || 'home');
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-      if (window.lenis) window.lenis.stop();
-    } else {
-      document.body.style.overflow = 'unset';
-      if (window.lenis) window.lenis.start();
-    }
-    
-    return () => {
-      document.body.style.overflow = 'unset';
-      if (window.lenis) window.lenis.start();
-    };
-  }, [isMobileMenuOpen]);
-
   const scrollToSection = (id) => {
-    if (isMobileMenuOpen) {
-      setIsMobileMenuOpen(false);
-      setTimeout(() => {
-        performScroll(id);
-      }, 300);
-    } else {
-      performScroll(id);
-    }
-  };
-
-  const performScroll = (id) => {
     const element = document.getElementById(id);
     if (element) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-      
-      if (window.lenis) {
-        window.lenis.scrollTo(offsetPosition, { duration: 1.2 });
-      }
+      setIsMobileMenuOpen(false);
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
     <nav 
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-        isScrolled ? 'bg-black/80 backdrop-blur-md py-4' : 'bg-transparent py-6'
+      className={`fixed top-0 left-0 w-full z-[1000] transition-all duration-500 border-b border-transparent ${
+        isScrolled 
+          ? 'py-4 glass border-border bg-black/60' 
+          : 'py-8 bg-transparent'
       }`}
     >
-      <div className="container mx-auto px-6 flex items-center justify-between">
+      <div className="max-w-[1400px] mx-auto px-8 md:px-12 flex items-center justify-between">
         {/* Logo */}
         <div 
-          onClick={() => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            if (window.lenis) window.lenis.scrollTo(0, { duration: 1.2 });
-          }}
-          className="flex items-center gap-3 cursor-pointer relative z-[10000]"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex items-center gap-4 cursor-pointer group"
         >
-          {/* Logo Icon — exactly matching the constellation square style */}
-          <div className="w-11 h-11 bg-[#0f1729] rounded-md shadow-lg flex items-center justify-center border border-[#1e3a5f]/60 overflow-hidden relative">
-            <svg viewBox="0 0 100 100" className="w-full h-full p-1.5">
-              {/* Faint blue grid lines */}
-              <line x1="25" y1="0"  x2="25" y2="100" stroke="#2a4a7f" strokeWidth="0.8" opacity="0.5"/>
-              <line x1="50" y1="0"  x2="50" y2="100" stroke="#2a4a7f" strokeWidth="0.8" opacity="0.5"/>
-              <line x1="75" y1="0"  x2="75" y2="100" stroke="#2a4a7f" strokeWidth="0.8" opacity="0.5"/>
-              <line x1="0" y1="25"  x2="100" y2="25" stroke="#2a4a7f" strokeWidth="0.8" opacity="0.5"/>
-              <line x1="0" y1="50"  x2="100" y2="50" stroke="#2a4a7f" strokeWidth="0.8" opacity="0.5"/>
-              <line x1="0" y1="75"  x2="100" y2="75" stroke="#2a4a7f" strokeWidth="0.8" opacity="0.5"/>
-
-              {/* Constellation connecting lines — draw animation */}
-              <g className="draw-line" style={{strokeDasharray: 300, strokeDashoffset: 300, animation: 'draw 1.5s ease forwards 0.3s'}}>
-                <line x1="22" y1="18" x2="55" y2="30" stroke="white" strokeWidth="1.2" opacity="0.6"/>
-                <line x1="55" y1="30" x2="75" y2="18" stroke="white" strokeWidth="1.2" opacity="0.6"/>
-                <line x1="55" y1="30" x2="50" y2="55" stroke="white" strokeWidth="1.2" opacity="0.6"/>
-                <line x1="50" y1="55" x2="30" y2="68" stroke="white" strokeWidth="1.2" opacity="0.6"/>
-                <line x1="50" y1="55" x2="70" y2="65" stroke="white" strokeWidth="1.2" opacity="0.6"/>
-                <line x1="30" y1="68" x2="45" y2="85" stroke="white" strokeWidth="1.2" opacity="0.6"/>
-              </g>
-
-              {/* Star dots */}
-              <circle cx="22" cy="18" r="3.5" fill="white"/>
-              <circle cx="55" cy="30" r="3.5" fill="white"/>
-              <circle cx="75" cy="18" r="3.5" fill="white"/>
-              <circle cx="50" cy="55" r="4"   fill="white"/>
-              <circle cx="30" cy="68" r="3.5" fill="white"/>
-              <circle cx="70" cy="65" r="3.5" fill="white"/>
-              <circle cx="45" cy="85" r="3"   fill="white"/>
-            </svg>
+          <div className="relative w-8 h-8">
+            <div className="absolute inset-0 border-[1.5px] border-accent rounded-full animate-[spin_8s_linear_infinite]" />
+            <div className="absolute inset-[5px] border-[1.5px] border-blue rounded-full animate-[spin_5s_linear_infinite_reverse]" />
+            <div className="absolute inset-[11px] bg-accent rounded-full" />
           </div>
-
-          {/* Logo Text — bold brand name, exactly as in the logo */}
-          <span className="text-[1.35rem] font-display font-bold text-white tracking-widest leading-none">
-            ORION QUANT
-          </span>
+          <div className="flex flex-col">
+            <span className="font-display font-bold text-[13px] tracking-[0.15em] text-text-primary uppercase">
+              ORION QUANT
+            </span>
+            <span className="font-mono text-[9px] tracking-[0.2em] text-accent uppercase -mt-0.5">
+              Institutional HFT
+            </span>
+          </div>
         </div>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-12">
           {navLinks.map((item) => (
             <button 
               key={item.id} 
               onClick={() => scrollToSection(item.id)}
-              className={`text-xs font-medium transition-all duration-300 tracking-[0.2em] uppercase relative ${
-                activeSection === item.id ? 'text-white' : 'text-text-muted hover:text-white'
-              }`}
+              className="font-mono text-[11px] tracking-[0.15em] uppercase text-text-muted hover:text-text-primary transition-colors relative group"
             >
               {item.name}
-              {activeSection === item.id && (
-                <motion.div 
-                  layoutId="activeNavDot"
-                  className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-nebula-1"
-                />
-              )}
+              <span className="absolute -bottom-1 left-0 w-full h-[1px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
             </button>
           ))}
         </div>
         
-        {/* Client Login Button */}
-        <div className="hidden md:flex">
+        {/* Nav CTA */}
+        <div className="hidden md:flex items-center gap-6">
+          <button className="w-11 h-6 bg-border border border-border rounded-full relative cursor-pointer group">
+            <div className="absolute top-1 left-1 w-3.5 h-3.5 bg-accent rounded-full transition-transform duration-300 group-hover:scale-110" />
+          </button>
           <button 
-            className="px-6 py-2 border border-nebula-1 text-white text-xs font-bold tracking-widest uppercase rounded hover:bg-nebula-1 hover:text-black transition-all duration-300 shadow-[0_0_10px_rgba(0,212,255,0.2)] hover:shadow-[0_0_20px_rgba(0,212,255,0.4)]"
+            onClick={() => scrollToSection('contact')}
+            className="font-mono text-[11px] tracking-[0.12em] uppercase px-6 py-2.5 border border-accent text-accent hover:bg-accent hover:text-background transition-all duration-300 rounded-[2px]"
           >
-            Client Login
+            Access Terminal
           </button>
         </div>
 
         {/* Mobile Menu Toggle */}
         <button 
-          className="md:hidden text-white p-2 relative z-[10000]"
+          className="md:hidden text-text-primary"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          {isMobileMenuOpen ? <X size={28} className="text-nebula-1" /> : <Menu size={28} />}
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
@@ -179,36 +98,26 @@ const Navbar = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed top-0 left-0 w-[100vw] h-[100vh] bg-black z-[9999] md:hidden flex flex-col items-center justify-center"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-0 left-0 w-full h-screen bg-black/95 z-[999] flex flex-col items-center justify-center gap-8 md:hidden px-8 text-center"
           >
-            <div className="flex flex-col items-center gap-8">
-              {navLinks.map((item, i) => (
-                <motion.button 
-                  key={item.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * i + 0.1 }}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`text-2xl font-display font-medium uppercase tracking-[0.2em] transition-all ${
-                    activeSection === item.id ? 'text-nebula-1' : 'text-text-muted hover:text-white'
-                  }`}
-                >
-                  {item.name}
-                </motion.button>
-              ))}
-              <motion.button 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="mt-6 px-10 py-3 border border-nebula-1 text-white font-bold tracking-widest uppercase rounded hover:bg-nebula-1 hover:text-black transition-colors"
+            {navLinks.map((item) => (
+              <button 
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className="font-display text-2xl uppercase tracking-[0.1em] text-text-muted hover:text-accent transition-colors"
               >
-                Client Login
-              </motion.button>
-            </div>
+                {item.name}
+              </button>
+            ))}
+            <button 
+              onClick={() => scrollToSection('contact')}
+              className="font-mono text-sm tracking-[0.12em] uppercase px-12 py-4 border border-accent text-accent mt-4"
+            >
+              Access Terminal
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -217,3 +126,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
