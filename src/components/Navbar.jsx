@@ -30,16 +30,15 @@ const Navbar = () => {
   };
 
   return (
-    <nav 
-      className={`fixed top-0 left-0 w-full z-[1000] transition-all duration-500 border-b border-transparent ${
-        isScrolled 
-          ? 'py-4 glass border-border bg-black/60' 
+    <nav
+      className={`fixed top-0 left-0 w-full z-[1000] transition-all duration-500 border-b border-transparent ${isScrolled
+          ? 'py-4 glass border-border bg-black/60'
           : 'py-8 bg-transparent'
-      }`}
+        }`}
     >
       <div className="max-w-[1400px] mx-auto px-8 md:px-12 flex items-center justify-between">
         {/* Logo */}
-        <div 
+        <div
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="flex items-center gap-4 cursor-pointer group"
         >
@@ -61,8 +60,8 @@ const Navbar = () => {
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-12">
           {navLinks.map((item) => (
-            <button 
-              key={item.id} 
+            <button
+              key={item.id}
               onClick={() => scrollToSection(item.id)}
               className="font-mono text-[11px] tracking-[0.15em] uppercase text-text-muted hover:text-text-primary transition-colors relative group"
             >
@@ -71,13 +70,13 @@ const Navbar = () => {
             </button>
           ))}
         </div>
-        
+
         {/* Nav CTA */}
         <div className="hidden md:flex items-center gap-6">
           <button className="w-11 h-6 bg-border border border-border rounded-full relative cursor-pointer group">
             <div className="absolute top-1 left-1 w-3.5 h-3.5 bg-accent rounded-full transition-transform duration-300 group-hover:scale-110" />
           </button>
-          <button 
+          <button
             onClick={() => scrollToSection('contact')}
             className="font-mono text-[11px] tracking-[0.12em] uppercase px-6 py-2.5 border border-accent text-accent hover:bg-accent hover:text-background transition-all duration-300 rounded-[2px]"
           >
@@ -86,7 +85,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu Toggle */}
-        <button 
+        <button
           className="md:hidden text-text-primary"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
@@ -104,7 +103,7 @@ const Navbar = () => {
             className="fixed top-0 left-0 w-full h-screen bg-black/95 z-[999] flex flex-col items-center justify-center gap-8 md:hidden px-8 text-center"
           >
             {navLinks.map((item) => (
-              <button 
+              <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
                 className="font-display text-2xl uppercase tracking-[0.1em] text-text-muted hover:text-accent transition-colors"
@@ -112,7 +111,7 @@ const Navbar = () => {
                 {item.name}
               </button>
             ))}
-            <button 
+            <button
               onClick={() => scrollToSection('contact')}
               className="font-mono text-sm tracking-[0.12em] uppercase px-12 py-4 border border-accent text-accent mt-4"
             >

@@ -316,9 +316,13 @@ const App = () => {
 
       {/* NAV */}
       <nav id="nav">
-        <a href="#" className="nav-logo" style={{ display: 'flex', alignItems: 'center' }}>
-          <div className="nav-logo-mark" style={{ width: 'auto', display: 'flex', alignItems: 'center' }}>
-            <img src={logo} alt="Orion Logo" className="logo-img" style={{ height: '40px', width: 'auto', objectFit: 'contain' }} />
+        <a href="#" className="nav-logo flex items-center group">
+          <div className="flex items-center w-auto h-auto">
+            <img 
+              src={logo} 
+              alt="Orion Logo" 
+              className="h-28 md:h-36 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(200,169,110,0.5)] group-hover:drop-shadow-[0_0_25px_rgba(200,169,110,0.7)] transition-all duration-500 transform group-hover:scale-105" 
+            />
           </div>
         </a>
         <ul className="nav-links">
